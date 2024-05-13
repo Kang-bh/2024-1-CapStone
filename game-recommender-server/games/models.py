@@ -29,3 +29,9 @@ class BaseGames(models.Model):
     name = models.CharField(max_length=100)
     genres = models.TextField()
     image_url = models.TextField()
+
+
+class SteamGames(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    app_id = models.IntegerField()
+    game_name = models.CharField(max_length=300)

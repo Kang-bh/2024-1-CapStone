@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-_pxe5+*q=5f7)794!*z91+z_hlhml@=@g4$qns4*tyc@+r#4i0
 DEBUG = True
 
 ALLOWED_HOSTS = []
+APPEND_SLASH = False
 
 
 # Application definition
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'drf_yasg',
-    'rest_framework'
+    'rest_framework',
     'games',
 ]
 

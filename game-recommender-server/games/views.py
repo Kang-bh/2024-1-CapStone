@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from .models import User, RecommendResult, BaseGames
+from .models import User, RecommendResult, BaseGames, SteamGames
 from rest_framework import viewsets
-from .serializers import UserSerializer, RecommendResultSerializer, BaseGameSerializer
+from .serializers import UserSerializer, RecommendResultSerializer, BaseGameSerializer, SteamGameSerializer
 from rest_framework import status
 
 # Create your views here.
@@ -57,6 +57,30 @@ class baseGamesResultViewSet(viewsets.ModelViewSet):
     serializer_class = BaseGameSerializer
     queryset = BaseGames.objects.all()
     basename = 'baseGames'
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class steamGamesResultViewSet(viewsets.ModelViewSet):
+    serializer_class = SteamGameSerializer
+    queryset = SteamGames.objects.all()
+    basename = 'steamGames'
 
 
     def create(self, request, *args, **kwargs):

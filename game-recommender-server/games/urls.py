@@ -6,6 +6,7 @@ router = routers.DefaultRouter() # set default router
 router.register(r'users', views.userViewSet) # register userViewset and user
 router.register(r'recommend-results', views.recommendResultViewSet)
 router.register(r'base-games', views.baseGamesResultViewSet)
+router.register(r'steam-games', views.steamGamesResultViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

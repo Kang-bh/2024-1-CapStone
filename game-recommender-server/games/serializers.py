@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, BaseGames, RecommendResult
+from .models import User, BaseGames, RecommendResult, SteamGames
 
 class UserSerializer(serializers.ModelSerializer) :
     class Meta:
@@ -26,3 +26,9 @@ class BaseGameSerializer(serializers.ModelSerializer):
         data_copy = data.copy()
         data_copy['genres'] = ','.join(data['genres'])  # 리스트를 문자열로 변환
         return super().to_internal_value(data_copy)
+
+
+class SteamGameSerializer(serializers.ModelSerializer) :
+    class Meta:
+        model = SteamGames
+        fields = '__all__'

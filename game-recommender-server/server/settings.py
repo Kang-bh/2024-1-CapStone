@@ -9,25 +9,51 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
+import os
+import environ
 
+env = environ.Env(DEBUG=(bool, True))
+
+# Reading .env file
+environ.Env.read_env()
+
+print("DB_USER : " + env('DB_USER'))
+print("DB_USER : " + env('DB_USER'))
+print("DB_USER : " + env('DB_USER'))
+print("DB_USER : " + env('DB_USER'))
+print("DB_USER : " + env('DB_USER'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_pxe5+*q=5f7)794!*z91+z_hlhml@=@g4$qns4*tyc@+r#4i0"
+# SECURITY WARNING: keep the key used in production secret!
+SECRET_KEY = env('SECRET_KEY')
+DATABASE_NAME = env('DB_NAME')
+DATABASE_USER = env('DB_USER')
+DATABASE_PASSWORD = env('DB_PASSWORD')
+print("DATABASE_PASSWORD : ", DATABASE_PASSWORD)
+DATABASE_HOST = env('DB_HOST')
+DATABASE_PORT = env('DB_PORT', cast=int)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.102.222', 'localhost', '127.0.0.1'
+]
 APPEND_SLASH = False
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Application definition
 
@@ -39,6 +65,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'drf_yasg',
+    'corsheaders',
     'rest_framework',
     'games',
 ]
@@ -46,14 +73,18 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = "server.urls"
 
@@ -84,11 +115,11 @@ WSGI_APPLICATION = "server.wsgi.application"
 DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.mysql',
-        'PASSWORD': 'skoo1293!@#',
-        'HOST': 'localhost',  # 또는 MySQL 호스트의 주소
-        'PORT': '3306',       # MySQL 포트 번호
-        'USER': 'root',
-        'NAME': 'recommendgames', # -가 들어가서 그런걸 수 있음. mysql 한 번 확인
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,  # 또는 MySQL 호스트의 주소
+        'PORT': DATABASE_PORT,       # MySQL 포트 번호
+        'USER': DATABASE_USER,
+        'NAME': DATABASE_NAME, # -가 들어가서 그런걸 수 있음. mysql 한 번 확인
     }
 }
 
@@ -113,6 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
+print("good")
 
 LANGUAGE_CODE = "en-us"
 
@@ -132,3 +164,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+CORS_ORIGIN_WHITELIST = [
+    'http://192.168.102.51:3000', 'http://localhost:3000', 'http://127.0.0.1:3000'
+]
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False

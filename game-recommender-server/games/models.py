@@ -35,3 +35,5 @@ class SteamGames(models.Model):
     id = models.AutoField(primary_key=True, null=False)
     app_id = models.IntegerField()
     game_name = models.CharField(max_length=300)
+    likes =  models.IntegerField()
+    clicks =  models.IntegerField()
